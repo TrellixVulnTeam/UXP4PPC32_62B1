@@ -324,10 +324,16 @@ nsHttpChannel::Init(nsIURI *uri,
                     nsProxyInfo *proxyInfo,
                     uint32_t proxyResolveFlags,
                     nsIURI *proxyURI,
-                    const nsID& channelId)
+                    const nsID& channelId,
+                    nsContentPolicyType aContentPolicyType)
 {
-    nsresult rv = HttpBaseChannel::Init(uri, caps, proxyInfo,
-                                        proxyResolveFlags, proxyURI, channelId);
+    nsresult rv = HttpBaseChannel::Init(uri,
+                                        caps,
+                                        proxyInfo,
+                                        proxyResolveFlags,
+                                        proxyURI,
+                                        channelId,
+                                        aContentPolicyType);
     if (NS_FAILED(rv))
         return rv;
 
@@ -7822,7 +7828,7 @@ nsHttpChannel::AwaitingCacheCallbacks()
 }
 
 void
-nsHttpChannel::SetPushedStream(Http2PushedStream *stream)
+nsHttpChannel::SetPushedStream(Http2PushedStreamWrapper *stream)
 {
     MOZ_ASSERT(stream);
     MOZ_ASSERT(!mPushedStream);
@@ -7830,7 +7836,7 @@ nsHttpChannel::SetPushedStream(Http2PushedStream *stream)
 }
 
 nsresult
-nsHttpChannel::OnPush(const nsACString &url, Http2PushedStream *pushedStream)
+nsHttpChannel::OnPush(const nsACString &url, Http2PushedStreamWrapper *pushedStream)
 {
     MOZ_ASSERT(NS_IsMainThread());
     LOG(("nsHttpChannel::OnPush [this=%p]\n", this));

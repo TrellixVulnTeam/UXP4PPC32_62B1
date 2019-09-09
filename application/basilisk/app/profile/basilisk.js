@@ -53,12 +53,6 @@ pref("extensions.getAddons.recommended.browseURL", "https://@AM_DOMAIN@/?compone
 
 pref("extensions.update.autoUpdateDefault", true);
 
-// Leave these for the moment...
-pref("extensions.hotfix.id", "firefox-hotfix@mozilla.org");
-pref("extensions.hotfix.cert.checkAttributes", true);
-pref("extensions.hotfix.certs.1.sha1Fingerprint", "91:53:98:0C:C1:86:DF:47:8F:35:22:9E:11:C9:A7:31:04:49:A1:AA");
-pref("extensions.hotfix.certs.2.sha1Fingerprint", "39:E7:2B:7A:5B:CF:37:78:F9:5D:4A:E0:53:2D:2F:3D:68:53:C5:60");
-
 // Also, leave this for the moment...
 // Check AUS for system add-on updates.
 pref("extensions.systemAddon.update.url", "https://aus5.mozilla.org/update/3/SystemAddons/%VERSION%/%BUILD_ID%/%BUILD_TARGET%/%LOCALE%/%CHANNEL%/%OS_VERSION%/%DISTRIBUTION%/%DISTRIBUTION_VERSION%/update.xml");
@@ -77,6 +71,9 @@ pref("xpinstall.signatures.devInfoURL", "https://wiki.mozilla.org/Addons/Extensi
 
 // Dictionary download preference
 pref("browser.dictionaries.download.url", "http://@AM_DOMAIN@/dictionaries/");
+
+// Get More Tools link URL
+pref("browser.getdevtools.url","https://@AM_DOMAIN@/?component=integration&type=external&request=devtools");
 
 // At startup, should we check to see if the installation
 // date is older than some threshold
@@ -141,16 +138,14 @@ pref("app.update.url", "https://aus5.mozilla.org/update/6/%PRODUCT%/%VERSION%/%B
 // app.update.url.manual is in branding section
 // app.update.url.details is in branding section
 
+// User-settable override to app.update.url for testing purposes.
+//pref("app.update.url.override", "");
+
 // app.update.interval is in branding section
 // app.update.promptWaitTime is in branding section
 
 // Show the Update Checking/Ready UI when the user was idle for x seconds
 pref("app.update.idletime", 60);
-
-// Whether or not to attempt using the service for updates.
-#ifdef MOZ_MAINTENANCE_SERVICE
-pref("app.update.service.enabled", true);
-#endif
 
 // Symmetric (can be overridden by individual extensions) update preferences.
 // e.g.
@@ -335,7 +330,7 @@ pref("browser.helperApps.deleteTempFileOnExit", true);
 #endif
 
 // search engines URL
-pref("browser.search.searchEnginesURL",      "https://addons.mozilla.org/%LOCALE%/firefox/search-engines/");
+pref("browser.search.searchEnginesURL",      "https://@AM_DOMAIN@/search-plugins/");
 
 // pointer to the default engine name
 pref("browser.search.defaultenginename",      "chrome://browser-region/locale/region.properties");
@@ -344,18 +339,6 @@ pref("browser.search.defaultenginename",      "chrome://browser-region/locale/re
 pref("browser.search.order.1",                "chrome://browser-region/locale/region.properties");
 pref("browser.search.order.2",                "chrome://browser-region/locale/region.properties");
 pref("browser.search.order.3",                "chrome://browser-region/locale/region.properties");
-
-// Market-specific search defaults
-// This is disabled globally, and then enabled for individual locales
-// in firefox-l10n.js (eg. it's enabled for en-US).
-pref("browser.search.geoSpecificDefaults", false);
-pref("browser.search.geoSpecificDefaults.url", "https://search.services.mozilla.com/1/%APP%/%VERSION%/%CHANNEL%/%LOCALE%/%REGION%/%DISTRIBUTION%/%DISTRIBUTION_VERSION%");
-
-// US specific default (used as a fallback if the geoSpecificDefaults request fails).
-pref("browser.search.defaultenginename.US",      "data:text/plain,browser.search.defaultenginename.US=Google");
-pref("browser.search.order.US.1",                "data:text/plain,browser.search.order.US.1=Google");
-pref("browser.search.order.US.2",                "data:text/plain,browser.search.order.US.2=Yahoo");
-pref("browser.search.order.US.3",                "data:text/plain,browser.search.order.US.3=Bing");
 
 // search bar results always open in a new tab
 pref("browser.search.openintab", false);
@@ -1051,12 +1034,6 @@ pref("browser.newtabpage.introShown", false);
 // Toggles the content of 'about:newtab'. Shows the grid when enabled.
 pref("browser.newtabpage.enabled", true);
 
-// Toggles the enhanced content of 'about:newtab'. Shows sponsored tiles.
-sticky_pref("browser.newtabpage.enhanced", false);
-
-// enables Activity Stream inspired layout
-pref("browser.newtabpage.compact", false);
-
 // Disables capturing of page thumbnails
 pref("browser.pagethumbnails.capturing_disabled", false);
 
@@ -1170,52 +1147,10 @@ pref("browser.uiCustomization.debug", false);
 // CustomizableUI state of the browser's user interface
 pref("browser.uiCustomization.state", "");
 
-// The remote content URL shown for FxA signup. Must use HTTPS.
-pref("identity.fxaccounts.remote.signup.uri", "https://accounts.firefox.com/signup?service=sync&context=fx_desktop_v3");
-
-// The URL where remote content that forces re-authentication for Firefox Accounts
-// should be fetched.  Must use HTTPS.
-pref("identity.fxaccounts.remote.force_auth.uri", "https://accounts.firefox.com/force_auth?service=sync&context=fx_desktop_v3");
-
-// The remote content URL shown for signin in. Must use HTTPS.
-pref("identity.fxaccounts.remote.signin.uri", "https://accounts.firefox.com/signin?service=sync&context=fx_desktop_v3");
-
-// The remote content URL where FxAccountsWebChannel messages originate.
-pref("identity.fxaccounts.remote.webchannel.uri", "https://accounts.firefox.com/");
-
-// The value of the context query parameter passed in some fxa requests when config
-// discovery is enabled.
-pref("identity.fxaccounts.contextParam", "fx_desktop_v3");
-
-// The URL we take the user to when they opt to "manage" their Firefox Account.
-// Note that this will always need to be in the same TLD as the
-// "identity.fxaccounts.remote.signup.uri" pref.
-pref("identity.fxaccounts.settings.uri", "https://accounts.firefox.com/settings?service=sync&context=fx_desktop_v3");
-
-// The remote URL of the FxA Profile Server
-pref("identity.fxaccounts.remote.profile.uri", "https://profile.accounts.firefox.com/v1");
-
-// The remote URL of the FxA OAuth Server
-pref("identity.fxaccounts.remote.oauth.uri", "https://oauth.accounts.firefox.com/v1");
-
-// Whether we display profile images in the UI or not.
-pref("identity.fxaccounts.profile_image.enabled", true);
-
-// Token server used by the FxA Sync identity.
-pref("identity.sync.tokenserver.uri", "https://token.services.mozilla.com/1.0/sync/1.5");
-
 // URLs for promo links to mobile browsers. Note that consumers are expected to
 // append a value for utm_campaign.
 pref("identity.mobilepromo.android", "https://www.mozilla.org/firefox/android/?utm_source=firefox-browser&utm_medium=firefox-browser&utm_campaign=");
 pref("identity.mobilepromo.ios", "https://www.mozilla.org/firefox/ios/?utm_source=firefox-browser&utm_medium=firefox-browser&utm_campaign=");
-
-// Migrate any existing Firefox Account data from the default profile to the
-// Developer Edition profile.
-#ifdef MOZ_DEV_EDITION
-pref("identity.fxaccounts.migrateToDevEdition", true);
-#else
-pref("identity.fxaccounts.migrateToDevEdition", false);
-#endif
 
 // On GTK, we now default to showing the menubar only when alt is pressed:
 #ifdef MOZ_WIDGET_GTK
@@ -1290,17 +1225,6 @@ pref("media.gmp-provider.enabled", true);
 pref("privacy.trackingprotection.ui.enabled", true);
 #else
 pref("privacy.trackingprotection.ui.enabled", false);
-#endif
-
-// Enable Contextual Identity Containers
-#ifdef NIGHTLY_BUILD
-pref("privacy.userContext.enabled", true);
-pref("privacy.userContext.ui.enabled", true);
-pref("privacy.usercontext.about_newtab_segregation.enabled", true);
-#else
-pref("privacy.userContext.enabled", false);
-pref("privacy.userContext.ui.enabled", false);
-pref("privacy.usercontext.about_newtab_segregation.enabled", false);
 #endif
 
 #ifndef RELEASE_OR_BETA
@@ -1437,3 +1361,11 @@ pref("browser.crashReports.unsubmittedCheck.autoSubmit2", false);
 // controlling validation are located in /services/sync/services-sync.js
 pref("services.sync.validation.enabled", true);
 #endif
+
+// When a user cancels this number of authentication dialogs coming from
+// a single web page (eTLD+1) in a row, all following authentication dialogs
+// will be blocked (automatically canceled) for that page.
+// This counter is per-tab and per-domain to minimize false positives.
+// The counter resets when the page is reloaded from the UI
+// (content-reloads do NOT clear this to mitigate reloading tricks).
+pref("prompts.authentication_dialog_abuse_limit", 3);

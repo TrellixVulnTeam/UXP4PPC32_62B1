@@ -206,11 +206,6 @@
 #endif
 
 #ifdef MOZ_DEVTOOLS
-; [Webide Files]
-@RESPATH@/browser/chrome/webide@JAREXT@
-@RESPATH@/browser/chrome/webide.manifest
-@RESPATH@/browser/@PREF_DIR@/webide-prefs.js
-
 ; DevTools
 @RESPATH@/browser/chrome/devtools@JAREXT@
 @RESPATH@/browser/chrome/devtools.manifest
@@ -231,6 +226,7 @@
 
 ; [Default Preferences]
 ; All the pref files must be part of base to prevent migration bugs
+@RESPATH@/browser/defaults/permissions
 @RESPATH@/browser/@PREF_DIR@/palemoon.js
 @RESPATH@/browser/@PREF_DIR@/palemoon-branding.js
 @RESPATH@/greprefs.js
@@ -317,13 +313,6 @@
 #endif
 @RESPATH@/chrome/pippki@JAREXT@
 @RESPATH@/chrome/pippki.manifest
-
-; for Solaris SPARC
-#ifdef SOLARIS
-bin/libfreebl_32fpu_3.so
-bin/libfreebl_32int_3.so
-bin/libfreebl_32int64_3.so
-#endif
 
 ; [Updater]
 ;

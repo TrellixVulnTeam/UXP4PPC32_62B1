@@ -8,8 +8,8 @@
 # These values where appropriate are hardcoded in application.ini
 # to "Pale Moon" and "Moonchild Productions" respectively for
 # Pale Moon
-MOZ_APP_BASENAME=ArcticFox
-MOZ_APP_VENDOR=wicknix
+MOZ_APP_BASENAME=Palemoon 
+MOZ_APP_VENDOR=Moonchild
 
 # Application Version
 # MOZ_APP_VERSION is read from ./config/version.txt
@@ -45,6 +45,9 @@ MOZ_PHOENIX=1
 
 # Browser Feature: Status bar Component
 MOZ_BROWSER_STATUSBAR=1
+
+# Lightweight Themes
+MOZ_PERSONAS=1
 
 # Browser Feature: Profile Migration Component
 MOZ_PROFILE_MIGRATOR=
@@ -99,7 +102,6 @@ if test "$OS_ARCH" = "WINNT" -o \
 fi
 
 # Short-circuit a few services to be removed
-MOZ_MAINTENANCE_SERVICE=
 MOZ_SERVICES_HEALTHREPORT=
 MOZ_ADDON_SIGNING=0
 MOZ_REQUIRE_SIGNING=0

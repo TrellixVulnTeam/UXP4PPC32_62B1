@@ -1,0 +1,9 @@
+/*.app/***
+/*.dylib
+/certutil
+ambassador-bin
+/gtest/***
+/pk12util
+/ssltunnel
+/xpcshell
+/XUL

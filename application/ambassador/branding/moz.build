@@ -1,0 +1,52 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+DIRS += ['locales']
+
+JAR_MANIFESTS += ['jar.mn']
+
+if CONFIG['MOZ_WIDGET_TOOLKIT'] == 'windows':
+    FINAL_TARGET_FILES += [
+        'ambassador.VisualElementsManifest.xml',
+    ]
+    FINAL_TARGET_FILES.VisualElements += [
+        'VisualElements_150.png',
+        'VisualElements_70.png',
+    ]
+    BRANDING_FILES += [
+        'ambassador-window.ico',
+        'appname.bmp',
+        'branding.nsi',
+        'wizHeader.bmp',
+        'wizHeaderRTL.bmp',
+        'wizWatermark.bmp',
+    ]
+    FINAL_TARGET_FILES.chrome.icons.default += [
+	    'ambassador-window.ico',
+    ]
+elif CONFIG['MOZ_WIDGET_TOOLKIT'] == 'cocoa':
+    BRANDING_FILES += [
+        'background.png',
+        'disk.icns',
+        'document.icns',
+        'dsstore',
+        'firefox.icns',
+    ]
+elif 'gtk' in CONFIG['MOZ_WIDGET_TOOLKIT']:
+    BRANDING_FILES += [
+        'ambassador-window16.png',
+        'ambassador-window32.png',
+        'ambassador-window48.png',
+        'mozicon128.png',
+    ]
+    FINAL_TARGET_FILES.icon += ['mozicon128.png']
+    FINAL_TARGET_FILES.chrome.icons.default += [
+        'ambassador-window16.png',
+        'ambassador-window32.png',
+        'ambassador-window48.png',
+    ]
+
+JS_PREFERENCE_FILES += [
+    'ambassador-branding.js'
+]

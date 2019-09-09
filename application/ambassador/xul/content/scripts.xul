@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+
+<!--
+   -
+   - This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+<overlay id="ambassador-scripts-overlay"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+  <overlaytarget id="scripts-overlay-target">
+
+    <script src="chrome://global/content/findUtils.js"/>
+    <script src="chrome://global/content/globalOverlay.js"/>
+    <script src="chrome://global/content/nsTransferable.js"/>
+
+    <script><![CDATA[
+        /* utils.js overloads the standard JS messages with prompt service 
+         * calls, which require the locale support to have loaded. This next 
+         * line is needed so that the onLoad function in handlers.js can 
+         * display the "error loading ChatZilla" message even if the locale
+         * support is what failed to load.
+         */
+        window.baseAlert = window.alert;
+    ]]></script>
+    <script src="chrome://ambassador/content/lib/js/utils.js"/>
+    <script src="chrome://ambassador/content/lib/js/connection-xpcom.js"/>
+    <script src="chrome://ambassador/content/lib/js/events.js"/>
+    <script src="chrome://ambassador/content/lib/js/command-manager.js"/>
+    <script src="chrome://ambassador/content/lib/js/pref-manager.js"/>
+    <script src="chrome://ambassador/content/lib/js/message-manager.js"/>
+    <script src="chrome://ambassador/content/lib/js/menu-manager.js"/>
+    <script src="chrome://ambassador/content/lib/js/irc.js"/>
+    <script src="chrome://ambassador/content/lib/js/irc-debug.js"/>
+    <script src="chrome://ambassador/content/lib/js/file-utils.js"/>
+    <script src="chrome://ambassador/content/lib/js/dcc.js"/>
+    <script src="chrome://ambassador/content/lib/js/sts.js"/>
+    <script src="chrome://ambassador/content/lib/js/ident.js"/>
+    <script src="chrome://ambassador/content/lib/js/text-serializer.js"/>
+    <script src="chrome://ambassador/content/lib/js/text-logger.js"/>
+    <script src="chrome://ambassador/content/lib/js/json-serializer.js"/>
+    <script src="chrome://ambassador/content/lib/xul/munger.js"/>
+    <script src="chrome://ambassador/content/lib/xul/tree-utils.js"/>
+
+    <script src="chrome://ambassador/content/static.js"/>
+    <script src="chrome://ambassador/content/commands.js"/>
+    <script src="chrome://ambassador/content/menus.js"/>
+    <script src="chrome://ambassador/content/prefs.js"/>
+    <script src="chrome://ambassador/content/messages.js"/>
+    <script src="chrome://ambassador/content/mungers.js"/>
+    <script src="chrome://ambassador/content/handlers.js"/>
+    <script src="chrome://ambassador/content/networks.js"/>
+    <script src="chrome://ambassador/content/devtools.js"/>
+
+  </overlaytarget>
+
+</overlay>

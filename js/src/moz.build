@@ -355,7 +355,6 @@ UNIFIED_SOURCES += [
     'vm/UbiNode.cpp',
     'vm/UbiNodeCensus.cpp',
     'vm/UbiNodeShortestPaths.cpp',
-    'vm/UnboxedObject.cpp',
     'vm/Unicode.cpp',
     'vm/Value.cpp',
     'vm/WeakMapPtr.cpp',
@@ -620,11 +619,11 @@ else:
         'perf/pm_stub.cpp'
     ]
 
-GENERATED_FILES += ['jsautokw.h']
-jsautokw = GENERATED_FILES['jsautokw.h']
-jsautokw.script = 'jsautokw.py'
-jsautokw.inputs += [
-    'vm/Keywords.h'
+GENERATED_FILES += ['frontend/ReservedWordsGenerated.h']
+ReservedWordsGenerated = GENERATED_FILES['frontend/ReservedWordsGenerated.h']
+ReservedWordsGenerated.script = 'frontend/GenerateReservedWords.py'
+ReservedWordsGenerated.inputs += [
+    'frontend/ReservedWords.h'
 ]
 
 # JavaScript must be built shared, even for static builds, as it is used by
@@ -720,14 +719,6 @@ if CONFIG['OS_ARCH'] == 'FreeBSD':
 if CONFIG['OS_ARCH'] == 'Linux':
     OS_LIBS += [
         'dl',
-    ]
-
-if CONFIG['OS_ARCH'] == 'SunOS':
-    OS_LIBS += [
-        'posix4',
-        'dl',
-        'nsl',
-        'socket',
     ]
 
 OS_LIBS += CONFIG['REALTIME_LIBS']

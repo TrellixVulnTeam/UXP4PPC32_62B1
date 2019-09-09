@@ -1,8 +1,8 @@
 // ===| General |==============================================================
 
-pref("startup.homepage_welcome_url","about:");
+pref("startup.homepage_welcome_url","http://www.palemoon.org/firstrun.shtml");
 
-pref("app.vendorURL", "https://github.com/wicknix");
+pref("app.vendorURL", "http://www.palemoon.org/");
 
 
 // User Interface
@@ -27,10 +27,6 @@ pref("app.update.promptWaitTime", 172800);
 
 // Add-on window fixes
 pref("extensions.getMoreThemesURL", "https://addons.palemoon.org/themes/");
-
-// Extensions Blocklist
-pref("extensions.blocklist.url","http://blocklist.palemoon.org/%VERSION%/blocklist.xml");
-pref("extensions.blocklist.itemURL", "http://blocklist.palemoon.org/info/?id=%blockID%");
 
 pref("extensions.update.autoUpdateDefault", true); // Automatically update extensions by default
 pref("extensions.getAddons.maxResults", 10);

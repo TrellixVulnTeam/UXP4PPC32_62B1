@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+#filter substitution
+
+#ifndef IRC_STANDALONE_BUILD
+#include @TK_DEFINES@
+#include @APP_DEFINES@
+#endif
+
+<RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:em="http://www.mozilla.org/2004/em-rdf#">
+  <Description about="urn:mozilla:install-manifest"
+               em:id="@INSTALL_EXTENSION_ID@"
+               em:name="Ambassador @MOZ_LANG_TITLE@ Language Pack"
+               em:version="@APP_VERSION@"
+               em:type="8"
+               em:creator="@MOZ_LANGPACK_CREATOR@"
+               em:homepageURL="@MOZ_LANGPACK_HOMEPAGE@">
+#ifdef MOZ_LANGPACK_CONTRIBUTORS
+    @MOZ_LANGPACK_CONTRIBUTORS@
+#endif
+
+    <em:iconURL>chrome://ambassador/skin/images/icon64.png</em:iconURL>
+
+    <!-- For maxVersion of applications that follow the rapid cycle pattern,
+         use '(x)a1' (*-central) on default,
+         and '(x-1).*' (*-aurora/beta/release) for branches. -->
+
+    <!-- Pale Moon
+        27.7 is Goanna 3.4
+        28.x is Goanna 4.1 -->
+    <em:targetApplication>
+      <Description>
+        <em:id>{8de7fcbb-c55c-4fbe-bfc5-fc555c87dbc4}</em:id>
+        <em:minVersion>27.7</em:minVersion>
+        <em:maxVersion>@PALEMOON_MAXVERSION@</em:maxVersion>
+      </Description>
+    </em:targetApplication>
+
+    <!-- Basilisk -->
+    <em:targetApplication>
+      <Description>
+        <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
+        <em:minVersion>3.5</em:minVersion>
+        <em:maxVersion>@BASILISK_MAXVERSION@</em:maxVersion>
+        <em:basilisk>true</em:basilisk>
+      </Description>
+    </em:targetApplication>
+    <em:unpack>true</em:unpack>
+  </Description>
+</RDF>

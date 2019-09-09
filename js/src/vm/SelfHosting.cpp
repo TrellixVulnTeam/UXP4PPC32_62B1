@@ -477,7 +477,7 @@ intrinsic_FinishBoundFunctionInit(JSContext* cx, unsigned argc, Value* vp)
     // Try to avoid invoking the resolve hook.
     if (targetObj->is<JSFunction>() && !targetObj->as<JSFunction>().hasResolvedLength()) {
         RootedValue targetLength(cx);
-        if (!targetObj->as<JSFunction>().getUnresolvedLength(cx, &targetLength))
+        if (!JSFunction::getUnresolvedLength(cx, targetObj.as<JSFunction>(), &targetLength))
             return false;
 
         length = Max(0.0, targetLength.toNumber() - argCount);
@@ -2154,7 +2154,7 @@ static const JSFunctionSpec intrinsic_functions[] = {
     JS_INLINABLE_FN("std_Array_slice",           array_slice,                  2,0, ArraySlice),
     JS_FN("std_Array_sort",                      array_sort,                   1,0),
     JS_FN("std_Array_reverse",                   array_reverse,                0,0),
-    JS_INLINABLE_FN("std_Array_splice",          array_splice,                 2,0, ArraySplice),
+    JS_FNINFO("std_Array_splice",                array_splice, &array_splice_info, 2,0),
 
     JS_FN("std_Date_now",                        date_now,                     0,0),
     JS_FN("std_Date_valueOf",                    date_valueOf,                 0,0),
@@ -2200,8 +2200,10 @@ static const JSFunctionSpec intrinsic_functions[] = {
     JS_INLINABLE_FN("std_String_charAt",         str_charAt,                   1,0, StringCharAt),
     JS_FN("std_String_endsWith",                 str_endsWith,                 1,0),
     JS_FN("std_String_trim",                     str_trim,                     0,0),
-    JS_FN("std_String_trimLeft",                 str_trimLeft,                 0,0),
-    JS_FN("std_String_trimRight",                str_trimRight,                0,0),
+    JS_FN("std_String_trimLeft",                 str_trimStart,                0,0),
+    JS_FN("std_String_trimStart",                str_trimStart,                0,0),
+    JS_FN("std_String_trimRight",                str_trimEnd,                  0,0),
+    JS_FN("std_String_trimEnd",                  str_trimEnd,                  0,0),
     JS_FN("std_String_toLocaleLowerCase",        str_toLocaleLowerCase,        0,0),
     JS_FN("std_String_toLocaleUpperCase",        str_toLocaleUpperCase,        0,0),
     JS_FN("std_String_normalize",                str_normalize,                0,0),
@@ -3006,7 +3008,7 @@ JSRuntime::cloneSelfHostedFunctionScript(JSContext* cx, HandlePropertyName name,
     MOZ_ASSERT(targetFun->isInterpretedLazy());
     MOZ_ASSERT(targetFun->isSelfHostedBuiltin());
 
-    RootedScript sourceScript(cx, sourceFun->getOrCreateScript(cx));
+    RootedScript sourceScript(cx, JSFunction::getOrCreateScript(cx, sourceFun));
     if (!sourceScript)
         return false;
 

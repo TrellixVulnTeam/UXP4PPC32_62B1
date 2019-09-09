@@ -1184,14 +1184,6 @@ GetInterfaceImpl(JSContext* aCx, nsIInterfaceRequestor* aRequestor,
 }
 
 bool
-UnforgeableValueOf(JSContext* cx, unsigned argc, JS::Value* vp)
-{
-  JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
-  args.rval().set(args.thisv());
-  return true;
-}
-
-bool
 ThrowingConstructor(JSContext* cx, unsigned argc, JS::Value* vp)
 {
   return ThrowErrorMessage(cx, MSG_ILLEGAL_CONSTRUCTOR);
@@ -2558,7 +2550,7 @@ NonVoidByteStringToJsval(JSContext *cx, const nsACString &str,
 
 
 template<typename T> static void
-NormalizeUSVStringInternal(JSContext* aCx, T& aString)
+NormalizeUSVStringInternal(T& aString)
 {
   char16_t* start = aString.BeginWriting();
   // Must use const here because we can't pass char** to UTF16CharEnumerator as
@@ -2575,15 +2567,15 @@ NormalizeUSVStringInternal(JSContext* aCx, T& aString)
 }
 
 void
-NormalizeUSVString(JSContext* aCx, nsAString& aString)
+NormalizeUSVString(nsAString& aString)
 {
-  NormalizeUSVStringInternal(aCx, aString);
+  NormalizeUSVStringInternal(aString);
 }
 
 void
-NormalizeUSVString(JSContext* aCx, binding_detail::FakeString& aString)
+NormalizeUSVString(binding_detail::FakeString& aString)
 {
-  NormalizeUSVStringInternal(aCx, aString);
+  NormalizeUSVStringInternal(aString);
 }
 
 bool

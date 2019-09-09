@@ -7,7 +7,7 @@
 **
 ** Brendan Eich, 7/20/95
 */
-#include <stdio.h>  /*OSF/1 requires this before grp.h, so put it first */
+#include <stdio.h>  /* OSF/1 requires this before grp.h, so put it first */
 #include <assert.h>
 #include <fcntl.h>
 #include <errno.h>

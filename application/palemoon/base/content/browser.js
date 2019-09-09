@@ -412,6 +412,10 @@ var gURLBarSettings = {
   },
 
   writePlaceholder: function() {
+    if (!gURLBar) {
+      return;
+    }
+
     let attribute = "placeholder";
     let prefs = this.prefSuggests.map(pref => {
       return this.prefSuggest + pref;
@@ -1147,7 +1151,7 @@ var gBrowserInit = {
 
     // Setup click-and-hold gestures access to the session history
     // menus if global click-and-hold isn't turned on
-    if (!getBoolPref("ui.click_hold_context_menus", false))
+    if (!Services.prefs.getBoolPref("ui.click_hold_context_menus", false))
       SetClickAndHoldHandlers();
 
     // Initialize the full zoom setting.
@@ -1212,9 +1216,11 @@ var gBrowserInit = {
     placesContext.addEventListener("popuphiding", updateEditUIVisibility, false);
 #endif
 
+#ifdef MOZ_PERSONAS
     gBrowser.mPanelContainer.addEventListener("InstallBrowserTheme", LightWeightThemeWebInstaller, false, true);
     gBrowser.mPanelContainer.addEventListener("PreviewBrowserTheme", LightWeightThemeWebInstaller, false, true);
     gBrowser.mPanelContainer.addEventListener("ResetBrowserThemePreview", LightWeightThemeWebInstaller, false, true);
+#endif
 
     // Bug 666808 - AeroPeek support for e10s
     if (!gMultiProcessBrowser) {
@@ -1783,7 +1789,7 @@ function BrowserGoHome(aEvent) {
   case "tabshifted":
   case "tab":
     urls = homePage.split("|");
-    var loadInBackground = getBoolPref("browser.tabs.loadBookmarksInBackground", false);
+    var loadInBackground = Services.prefs.getBoolPref("browser.tabs.loadBookmarksInBackground", false);
     gBrowser.loadTabs(urls, loadInBackground);
     break;
   case "window":
@@ -2661,6 +2667,11 @@ function getWebNavigation()
 }
 
 function BrowserReloadWithFlags(reloadFlags) {
+  
+  // Reset DOS mitigation for auth prompts when user initiates a reload.
+  let browser = gBrowser.selectedBrowser;
+  delete browser.authPromptCounter;
+  
   /* First, we'll try to use the session history object to reload so
    * that framesets are handled properly. If we're in a special
    * window (such as view-source) that has no session history, fall
@@ -3397,7 +3408,7 @@ function BrowserCustomizeToolbar() {
   TabsInTitlebar.allowedBy("customizing-toolbars", false);
 
   var customizeURL = "chrome://global/content/customizeToolbar.xul";
-  gCustomizeSheet = getBoolPref("toolbar.customization.usesheet", false);
+  gCustomizeSheet = Services.prefs.getBoolPref("toolbar.customization.usesheet", false);
 
   if (gCustomizeSheet) {
     let sheetFrame = document.createElement("iframe");
@@ -3466,6 +3477,7 @@ function BrowserToolboxCustomizeDone(aToolboxChanged) {
 
   // Update the urlbar
   if (gURLBar) {
+    gURLBarSettings.writePlaceholder();
     URLBarSetURI();
     XULBrowserWindow.asyncUpdateUI();
     BookmarkingUI.updateStarState();
@@ -3481,7 +3493,7 @@ function BrowserToolboxCustomizeDone(aToolboxChanged) {
   cmd.removeAttribute("disabled");
 
   // make sure to re-enable click-and-hold
-  if (!getBoolPref("ui.click_hold_context_menus", false))
+  if (!Services.prefs.getBoolPref("ui.click_hold_context_menus", false))
     SetClickAndHoldHandlers();
 
   gBrowser.selectedBrowser.focus();
@@ -4471,14 +4483,15 @@ nsBrowserAccess.prototype = {
         }
 
         let loadInBackground = gPrefService.getBoolPref("browser.tabs.loadDivertedInBackground");
-        let referrer = aOpener ? makeURI(aOpener.location.href) : null;
+        let openerWindow = (aContext & Ci.nsIBrowserDOMWindow.OPEN_NO_OPENER) ? null : aOpener;
 
         let tab = win.gBrowser.loadOneTab(aURI ? aURI.spec : "about:blank", {
                                           triggeringPrincipal: triggeringPrincipal,
                                           referrerURI: referrer,
                                           referrerPolicy: referrerPolicy,
                                           fromExternal: isExternal,
-                                          inBackground: loadInBackground});
+                                          inBackground: loadInBackground,
+                                          opener: openerWindow });
         let browser = win.gBrowser.getBrowserForTab(tab);
 
         if (gPrefService.getBoolPref("browser.tabs.noWindowActivationOnExternal")) {
@@ -5333,9 +5346,6 @@ function handleDroppedLink(event, urlOrLinks, name)
 
   let lastLocationChange = gBrowser.selectedBrowser.lastLocationChange;
 
-  let userContextId = gBrowser.selectedBrowser
-                      .getAttribute("usercontextid") || 0;
-
   let inBackground = Services.prefs.getBoolPref("browser.tabs.loadInBackground");
   if (event.shiftKey)
     inBackground = !inBackground;
@@ -5354,7 +5364,6 @@ function handleDroppedLink(event, urlOrLinks, name)
         replace: true,
         allowThirdPartyFixup: false,
         postDatas,
-        userContextId,
       });
     }
   });

@@ -1,0 +1,124 @@
+<?xml version="1.0"?>
+
+<!--
+   -
+   - This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+<!DOCTYPE overlay SYSTEM "chrome://ambassador/locale/ambassador.dtd" >
+
+<?xml-stylesheet href="chrome://ambassador/content/output-base.css" type="text/css"?>
+
+<overlay id="ambassador-popup-overlay"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+  <overlaytarget id="popup-overlay-target">
+
+    <tooltip id="percentTooltip">
+      <grid>
+          <columns>
+              <column />
+              <column />
+          </columns>
+          <rows>
+              <row>
+                  <label value="%U"/>
+                  <label value="&Underline.label;"/>
+              </row>
+              <row>
+                  <label value="%B"/>
+                  <label value="&Bold.label;"/>
+              </row>
+              <row>
+                  <label value="%R"/>
+                  <label value="&Reverse.label;"/>
+              </row>
+              <row>
+                  <label value="%O"/>
+                  <label value="&Normal.label;"/>
+              </row>
+              <row>
+                  <label value="%C"/>
+                  <label value="&Color.label;"/>
+              </row>
+              <row>
+                  <label value="%%C"/>
+                  <label value="%C"/>
+              </row>
+          </rows>
+      </grid>
+    </tooltip>
+    <tooltip id="colorTooltip" orient="vertical">
+      <label value="%Cxx[,yy] &ForeBack.label;"/>
+      <grid>
+          <columns>
+              <column />
+              <column />
+              <column />
+              <column />
+              <column />
+              <column />
+              <column />
+              <column />
+          </columns>
+          <rows>
+              <row>
+                  <box class="colorGrid ambassador-bg00 ambassador-fg01">
+                      <label value="0"/>
+                  </box>
+                  <box class="colorGrid ambassador-bg01 ambassador-fg00">
+                      <label value="1"/>
+                  </box>
+                  <box class="colorGrid ambassador-bg02 ambassador-fg00">
+                      <label value="2"/>
+                  </box>
+                  <box class="colorGrid ambassador-bg03 ambassador-fg00">
+                      <label value="3"/>
+                  </box>
+                  <box class="colorGrid ambassador-bg04 ambassador-fg00">
+                      <label value="4"/>
+                  </box>
+                  <box class="colorGrid ambassador-bg05 ambassador-fg00">
+                      <label value="5"/>
+                  </box>
+                  <box class="colorGrid ambassador-bg06 ambassador-fg00">
+                      <label value="6"/>
+                  </box>
+                  <box class="colorGrid ambassador-bg07 ambassador-fg00">
+                      <label value="7"/>
+                  </box>
+              </row>
+              <row>
+                  <box class="colorGrid ambassador-bg08 ambassador-fg01">
+                      <label value="8"/>
+                  </box>
+                  <box class="colorGrid ambassador-bg09 ambassador-fg01">
+                      <label value="9"/>
+                  </box>
+                  <box class="colorGrid ambassador-bg10 ambassador-fg01">
+                      <label value="10"/>
+                  </box>
+                  <box class="colorGrid ambassador-bg11 ambassador-fg01">
+                      <label value="11"/>
+                  </box>
+                  <box class="colorGrid ambassador-bg12 ambassador-fg01">
+                      <label value="12"/>
+                  </box>
+                  <box class="colorGrid ambassador-bg13 ambassador-fg01">
+                      <label value="13"/>
+                  </box>
+                  <box class="colorGrid ambassador-bg14 ambassador-fg01">
+                      <label value="14"/>
+                  </box>
+                  <box class="colorGrid ambassador-bg15 ambassador-fg01">
+                      <label value="15"/>
+                  </box>
+              </row>
+          </rows>
+      </grid>
+    </tooltip>
+
+  </overlaytarget>
+
+</overlay>  

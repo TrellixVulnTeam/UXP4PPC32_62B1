@@ -76,7 +76,7 @@ pref("browser.dictionaries.download.url", "https://@AM_DOMAIN@/dictionaries/");
 pref("browser.getdevtools.url","https://@AM_DOMAIN@/?component=integration&type=external&request=devtools");
 
 // Feedback URL
-pref("browser.feedback.url", "https://github.com/wicknix/Arctic-Fox/issues");
+pref("browser.feedback.url", "https://forum.palemoon.org");
 
 // Help button in slow startup dialog
 pref("browser.slowstartup.help.url", "http://www.palemoon.org/support/slowstartup.shtml");
@@ -142,7 +142,7 @@ pref("app.update.certs.1.issuerName", "CN=COMODO RSA Domain Validation Secure Se
 pref("app.update.certs.1.commonName", "*.palemoon.org");
 
 // Whether or not app updates are enabled
-pref("app.update.enabled", false);
+pref("app.update.enabled", true);
 
 // This preference turns on app.update.mode and allows automatic download and
 // install to take place. We use a separate boolean toggle for this to make
@@ -157,7 +157,7 @@ pref("app.update.silent", false);
 
 // If set to true, the Update Service will apply updates in the background
 // when it finishes downloading them.
-pref("app.update.staging.enabled", false);
+pref("app.update.staging.enabled", true);
 
 // Update service URL:
 pref("app.update.url", "https://aus.palemoon.org/?application=%PRODUCT%&version=%VERSION%&arch=%BUILD_TARGET%&buildid=%BUILD_ID%&channel=%CHANNEL%");
@@ -206,9 +206,6 @@ pref("extensions.dss.switchPending", false);    // Non-dynamic switch pending af
 pref("extensions.{972ce4c6-7e08-4474-a285-3208198ce6fd}.name", "chrome://browser/locale/browser.properties");
 pref("extensions.{972ce4c6-7e08-4474-a285-3208198ce6fd}.description", "chrome://browser/locale/browser.properties");
 
-pref("xpinstall.whitelist.add", "addons.mozilla.org,www.palemoon.org,addons.palemoon.org");
-pref("xpinstall.whitelist.add.36", "");
-pref("xpinstall.whitelist.add.180", "");
 pref("xpinstall.whitelist.required", false);
 // Allow installing XPI add-ons by direct URL requests (no referrer)
 pref("xpinstall.whitelist.directRequest", true);
@@ -927,7 +924,7 @@ pref("browser.zoom.siteSpecific", true);
 pref("browser.zoom.updateBackgroundTabs", true);
 
 // base URL for web-based support pages
-pref("app.support.baseURL", "http://duckduckgo.com");
+pref("app.support.baseURL", "http://www.palemoon.org/support/");
 
 // Name of alternate about: page for certificate errors (when undefined, defaults to about:neterror)
 pref("security.alternate_certificate_error_page", "certerror");
@@ -1080,16 +1077,11 @@ pref("browser.newtab.preload", false);
 // Toggles the content of 'about:newtab'. Shows the grid when enabled.
 pref("browser.newtabpage.enabled", true);
 
-// XXX: Remove this when "enhanced" tiles are dead
-pref("browser.newtabpage.enhanced", false);
-
 // Disables capturing of page thumbnails
 pref("browser.pagethumbnails.capturing_disabled", false);
 
 // enables showing basic placeholders for missing thumbnails
 pref("browser.newtabpage.thumbnailPlaceholder", false);
-
-pref("privacy.usercontext.about_newtab_segregation.enabled", false);
 
 // number of columns of newtab grid
 pref("browser.newtabpage.columns", 4);
@@ -1104,6 +1096,9 @@ pref("full-screen-api.enabled", true);
 // Maximum number of sites to return from the places database.
 // 0-100 (currently)
 pref("permissions.places-sites-limit", 50);
+
+// Built-in default permissions.
+pref("permissions.manager.defaultsUrl", "resource://app/defaults/permissions");
 
 // Startup Crash Tracking
 // number of startup crashes that can occur before starting into safe mode automatically
@@ -1162,6 +1157,14 @@ pref("toolkit.pageThumbs.minHeight", 180);
 #ifdef MOZ_WIDGET_GTK
 pref("ui.key.menuAccessKeyFocuses", true);
 #endif
+
+// When a user cancels this number of authentication dialogs coming from
+// a single web page (eTLD+1) in a row, all following authentication dialogs
+// will be blocked (automatically canceled) for that page.
+// This counter is per-tab and per-domain to minimize false positives.
+// The counter resets when the page is reloaded from the UI
+// (content-reloads do NOT clear this to mitigate reloading tricks).
+pref("prompts.authentication_dialog_abuse_limit", 3);
 
 // ****************** s4e prefs ******************
 pref("status4evar.addonbar.borderStyle", false);

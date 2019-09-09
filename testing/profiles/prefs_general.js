@@ -108,7 +108,6 @@ user_pref("extensions.update.background.url", "http://%(server)s/extensions-dumm
 user_pref("extensions.blocklist.detailsURL", "http://%(server)s/extensions-dummy/blocklistDetailsURL");
 user_pref("extensions.blocklist.itemURL", "http://%(server)s/extensions-dummy/blocklistItemURL");
 user_pref("extensions.blocklist.url", "http://%(server)s/extensions-dummy/blocklistURL");
-user_pref("extensions.hotfix.url", "http://%(server)s/extensions-dummy/hotfixURL");
 user_pref("extensions.systemAddon.update.url", "http://%(server)s/dummy-system-addons.xml");
 // Turn off extension updates so they don't bother tests
 user_pref("extensions.update.enabled", false);
@@ -257,21 +256,6 @@ user_pref('toolkit.telemetry.server', 'https://%(server)s/telemetry-dummy/');
 // watching is working.
 user_pref('toolkit.telemetry.test.pref1', true);
 user_pref('toolkit.telemetry.test.pref2', false);
-
-// We don't want to hit the real Firefox Accounts server for tests.  We don't
-// actually need a functioning FxA server, so just set it to something that
-// resolves and accepts requests, even if they all fail.
-user_pref('identity.fxaccounts.auth.uri', 'https://%(server)s/fxa-dummy/');
-
-// Ditto for all the other Firefox accounts URIs used for about:accounts et al.:
-user_pref("identity.fxaccounts.remote.signup.uri", "https://%(server)s/fxa-signup");
-user_pref("identity.fxaccounts.remote.force_auth.uri", "https://%(server)s/fxa-force-auth");
-user_pref("identity.fxaccounts.remote.signin.uri", "https://%(server)s/fxa-signin");
-user_pref("identity.fxaccounts.settings.uri", "https://%(server)s/fxa-settings");
-user_pref('identity.fxaccounts.remote.webchannel.uri', 'https://%(server)s/');
-
-// We don't want browser tests to perform FxA device registration.
-user_pref('identity.fxaccounts.skipDeviceRegistration', true);
 
 // Increase the APZ content response timeout in tests to 1 minute.
 // This is to accommodate the fact that test environments tends to be slower

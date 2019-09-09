@@ -1093,11 +1093,11 @@ class LinuxCrossCompileToolchainTest(BaseToolchainTest):
             '/usr/bin/gcc': GCC_4_9 + self.PLATFORMS[host],
             '/usr/bin/g++': GXX_4_9 + self.PLATFORMS[host],
         }
-#        self.do_toolchain_test(paths, {
-#            'c_compiler': ('Target C compiler target CPU (%s) '
-#                           'does not match --target CPU (%s)'
-#                           % (host_cpu, cpu)),
-#        })
+        self.do_toolchain_test(paths, {
+            'c_compiler': ('Target C compiler target CPU (%s) '
+                           'does not match --target CPU (%s)'
+                           % (host_cpu, cpu)),
+        })
 
         paths.update({
             '%s-gcc' % toolchain_prefix: GCC_4_9 + self.PLATFORMS[target],

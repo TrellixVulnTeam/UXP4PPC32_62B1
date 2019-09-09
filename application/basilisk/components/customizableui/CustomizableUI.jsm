@@ -38,7 +38,6 @@ const kPrefCustomizationState        = "browser.uiCustomization.state";
 const kPrefCustomizationAutoAdd      = "browser.uiCustomization.autoAdd";
 const kPrefCustomizationDebug        = "browser.uiCustomization.debug";
 const kPrefDrawInTitlebar            = "browser.tabs.drawInTitlebar";
-const kPrefWebIDEInNavbar            = "devtools.webide.widget.inNavbarByDefault";
 
 const kExpectedWindowURL = "chrome://browser/content/browser.xul";
 
@@ -158,10 +157,7 @@ var gUIStateBeforeReset = {
 XPCOMUtils.defineLazyGetter(this, "log", () => {
   let scope = {};
   Cu.import("resource://gre/modules/Console.jsm", scope);
-  let debug;
-  try {
-    debug = Services.prefs.getBoolPref(kPrefCustomizationDebug);
-  } catch (ex) {}
+  let  debug = Services.prefs.getBoolPref(kPrefCustomizationDebug, false);
   let consoleOptions = {
     maxLogLevel: debug ? "all" : "log",
     prefix: "CustomizableUI",
@@ -200,7 +196,6 @@ var CustomizableUIInternal = {
       "find-button",
       "preferences-button",
       "add-ons-button",
-      "sync-button",
     ];
 
     if (!AppConstants.MOZ_DEV_EDITION) {
@@ -232,10 +227,6 @@ var CustomizableUIInternal = {
 
     if (AppConstants.MOZ_DEV_EDITION) {
       navbarPlacements.splice(2, 0, "developer-button");
-    }
-
-    if (Services.prefs.getBoolPref(kPrefWebIDEInNavbar)) {
-      navbarPlacements.push("webide-button");
     }
 
     // Place this last, when createWidget is called for pocket, it will
@@ -1915,16 +1906,10 @@ var CustomizableUIInternal = {
   // state immediately when a browser window opens, which is important for
   // other consumers of this API.
   loadSavedState: function() {
-    let state = null;
-    try {
-      state = Services.prefs.getCharPref(kPrefCustomizationState);
-    } catch (e) {
-      log.debug("No saved state found");
-      // This will fail if nothing has been customized, so silently fall back to
-      // the defaults.
-    }
-
+    let state = Services.prefs.getCharPref(kPrefCustomizationState, "");
     if (!state) {
+      log.debug("No saved state found");
+      // Nothing has been customized, so silently fall back to the defaults.
       return;
     }
     try {
@@ -2209,10 +2194,7 @@ var CustomizableUIInternal = {
         this.notifyListeners("onWidgetAdded", widget.id, widget.currentArea,
                              widget.currentPosition);
       } else if (widgetMightNeedAutoAdding) {
-        let autoAdd = true;
-        try {
-          autoAdd = Services.prefs.getBoolPref(kPrefCustomizationAutoAdd);
-        } catch (e) {}
+        let autoAdd = Services.prefs.getBoolPref(kPrefCustomizationAutoAdd, true);
 
         // If the widget doesn't have an existing placement, and it hasn't been
         // seen before, then add it to its default area so it can be used.

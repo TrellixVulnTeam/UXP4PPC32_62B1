@@ -1264,7 +1264,6 @@ pref("javascript.options.strict",           false);
 #ifdef DEBUG
 pref("javascript.options.strict.debug",     false);
 #endif
-pref("javascript.options.unboxed_objects",  false);
 pref("javascript.options.baselinejit",      true);
 pref("javascript.options.ion",              true);
 pref("javascript.options.asmjs",            true);
@@ -1320,12 +1319,7 @@ pref("javascript.options.mem.gc_max_empty_chunk_count", 30);
 
 pref("javascript.options.showInConsole", false);
 
-#ifdef RELEASE_OR_BETA
-// Disabled in Beta and Release for now, see bug 1225406
-pref("javascript.options.shared_memory", false);
-#else
 pref("javascript.options.shared_memory", true);
-#endif
 
 pref("javascript.options.throw_on_debuggee_would_run", false);
 pref("javascript.options.dump_stack_on_debuggee_would_run", false);
@@ -1336,6 +1330,10 @@ pref("image.animation_mode",                "normal");
 
 // Same-origin policy for file URIs, "false" is traditional
 pref("security.fileuri.strict_origin_policy", true);
+
+// Treat all file URIs as having a unique origin.
+// Only has an effect if strict origin policy is true.
+pref("security.fileuri.unique_origin", true);
 
 // If this pref is true, prefs in the logging.config branch will be cleared on
 // startup. This is done so that setting a log-file and log-modules at runtime
@@ -1385,6 +1383,7 @@ pref("network.protocol-handler.external.vbscript", false);
 pref("network.protocol-handler.external.javascript", false);
 pref("network.protocol-handler.external.data", false);
 pref("network.protocol-handler.external.ms-help", false);
+pref("network.protocol-handler.external.res", false);
 pref("network.protocol-handler.external.shell", false);
 pref("network.protocol-handler.external.vnd.ms.radio", false);
 #ifdef XP_MACOSX
@@ -1475,7 +1474,10 @@ pref("network.http.request.max-start-delay", 10);
 pref("network.http.request.max-attempts", 10);
 
 // Headers
-pref("network.http.accept.default", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
+pref("network.http.accept.default", "*/*");
+pref("network.http.accept.navigation", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
+pref("network.http.accept.image", "image/png,image/svg+xml,image/*;q=0.8,*/*;q=0.5");
+pref("network.http.accept.style", "text/css,*/*;q=0.1");
 
 // Prefs allowing granular control of referers
 // 0=don't send any, 1=send only on clicks, 2=send on image requests as well
@@ -1989,6 +1991,13 @@ pref("network.generic-ntlm-auth.workstation", "WORKSTATION");
 //       but don't allow it for cross-origin sub-resources
 //   2 - allow the cross-origin authentication as well.
 pref("network.auth.subresource-http-auth-allow", 2);
+
+// Sub-resources HTTP-authentication for cross-origin images:
+// true - presenting the http auth. dialog for cross-origin images is allowed.
+// false - suppress the http auth. dialog for cross-origin images.
+// If network.auth.subresource-http-auth-allow has a value of 0 or 1, this pref
+// does not have any effect.
+pref("network.auth.subresource-http-img-XO-auth", false);
 
 // This preference controls whether to allow sending default credentials (SSO) to
 // NTLM/Negotiate servers allowed in the "trusted uri" list when navigating them
@@ -5148,9 +5157,6 @@ pref("layout.accessiblecaret.hide_carets_for_mouse_input", true);
 // Wakelock is disabled by default.
 pref("dom.wakelock.enabled", false);
 
-// The URL of the Firefox Accounts auth server backend
-pref("identity.fxaccounts.auth.uri", "https://api.accounts.firefox.com/v1");
-
 // disable mozsample size for now
 pref("image.mozsamplesize.enabled", false);
 
@@ -5200,6 +5206,9 @@ pref("intl.allow-insecure-text-input", false);
 // Enable meta-viewport support in remote APZ-enabled frames.
 pref("dom.meta-viewport.enabled", false);
 
+// Disable <meta http-equiv=set-cookie> support. See m-c bug 1457503 / UXP #1102.
+pref("dom.meta-set-cookie.enabled", false);
+
 // MozSettings debugging prefs for each component
 pref("dom.mozSettings.SettingsDB.debug.enabled", false);
 pref("dom.mozSettings.SettingsManager.debug.enabled", false);
@@ -5233,9 +5242,6 @@ pref("browser.search.update.interval", 21600);
 pref("browser.search.suggest.enabled", true);
 pref("browser.search.reset.enabled", false);
 pref("browser.search.reset.whitelist", "");
-pref("browser.search.geoSpecificDefaults", false);
-pref("browser.search.geoip.url", "https://location.services.mozilla.com/v1/country?key=%MOZILLA_API_KEY%");
-pref("browser.search.geoip.timeout", 3000);
 
 #ifdef MOZ_OFFICIAL_BRANDING
 // {moz:official} expands to "official"
@@ -5445,6 +5451,9 @@ pref("layout.css.servo.enabled", true);
 // URL-Bar will not be blocked when flipping this pref.
 pref("security.data_uri.block_toplevel_data_uri_navigations", true);
 
+// If true, all FTP subresource loads will be blocked.
+pref("security.block_ftp_subresources", true);
+
 // Disable Storage api in release builds.
 #ifdef NIGHTLY_BUILD
 pref("dom.storageManager.enabled", true);
@@ -5452,8 +5461,9 @@ pref("dom.storageManager.enabled", true);
 pref("dom.storageManager.enabled", false);
 #endif
 
-// When a user cancels this number of authentication dialogs coming from
-// a single web page in a row, all following authentication dialogs will
-// be blocked (automatically canceled) for that page. The counter resets
-// when the page is reloaded. To turn this feature off, just set the limit to 0.
-pref("prompts.authentication_dialog_abuse_limit", 3);
+// DoS protection for HTTP Auth prompt spawning.
+// -1 = completely disable HTTP Auth prompting. (careful!)
+// 0  = disable this DoS protection
+// >0 = suppress further prompts after the user has canceled the dialog n times
+// See application preferences for appropriate defaults.
+pref("prompts.authentication_dialog_abuse_limit", 0);
