@@ -68,6 +68,9 @@
 #  define GETRANDOM_NR 355
 # elif defined(__arm__)
 #  define GETRANDOM_NR 384
+// Added powerpc architecture: // Thanks xeno74!
+# elif defined(__powerpc__)
+# define GETRANDOM_NR 359
 # endif
 
 # if defined(SYS_getrandom)
